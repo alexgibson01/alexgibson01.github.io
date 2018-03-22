@@ -38,9 +38,9 @@
         //console.log(new_lng);
 
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 53.368555, lng: -2.580926}, // Stockton Heath
+          //center: {lat: 53.368555, lng: -2.580926}, // Stockton Heath
           //center:  {lat: new_lat, lng: new_lng},
-          //center: {lat: 51.4927325, lng: -0.1595648}, // Sloane Square
+          center: {lat: 51.4927325, lng: -0.1595648}, // Sloane Square
           zoom: 13,
           mapTypeId: 'roadmap'
 		
@@ -108,8 +108,6 @@
 
                   });   
 
-
-
          
         fetch('https://raw.githubusercontent.com/hazanjon/camra-pubs/master/research/SearchPubs.json')
         .then((resp) => resp.json())
@@ -138,7 +136,7 @@
                   icon: icons['pub1'].icon,
                   map: map
                 });
-                                      }
+                    }
 
               else if (pub.County === "CHES") {
               var marker = new google.maps.Marker
