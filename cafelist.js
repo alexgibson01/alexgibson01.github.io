@@ -10,6 +10,15 @@ var cafes = [
               "Postcode": "W1D 4RF"
             },
             {
+              "Type": "Classic Cafe",
+              "Name": "Regency Cafe",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.494039,
+              "Longitude": -0.132233,
+              "Postcode": "SW1P 4BY"
+            },
+            {
               "Type": "Modern Cafe",
               "Name": "NAC",
               "Town": "London",
@@ -17,6 +26,15 @@ var cafes = [
               "Latitude": 51.512495,
               "Longitude": -0.153407,
               "Postcode": "W1K 6ZP"
+            },
+            {
+              "Type": "Modern Cafe",
+              "Name": "Iddu",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.494056,
+              "Longitude": -0.178108,
+              "Postcode": "SW7 3ND"
             },
             {
               "Type": "Cabmen's Shelter",
