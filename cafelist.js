@@ -80,7 +80,62 @@ var cafes = [
               "Latitude": 51.497354,
               "Longitude": -0.158449,
               "Postcode": "SW1X 9EH"
+             },
+             {
+              "Type": "Cabmen's Shelter",
+              "Name": "Russell Square",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.521965,
+              "Longitude": -0.127663,
+              "Postcode": "WC1B"
+             },
+             {
+              "Type": "Cabmen's Shelter",
+              "Name": "St. George's Square",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.488815,
+              "Longitude": -0.135352,
+              "Postcode": "SW1V 3DZ"
+             },
+             {
+              "Type": "Cabmen's Shelter",
+              "Name": "Temple Place",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.511037,
+              "Longitude": -0.114684,
+              "Postcode": "WC2R 2PR"
+             },
+             {
+              "Type": "Cabmen's Shelter",
+              "Name": "Thurloe Place",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.496312,
+              "Longitude": -0.170438,
+              "Postcode": "SW7 2RZ"
+             },
+             {
+              "Type": "Cabmen's Shelter",
+              "Name": "Warwick Avenue",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.523222,
+              "Longitude": -0.183801,
+              "Postcode": "W9 2PT"
+             },
+             {
+              "Type": "Cabmen's Shelter",
+              "Name": "Wellington Place",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.532014,
+              "Longitude": -0.169639,
+              "Postcode": "NW8 7PE"
              }
+
             
           ];
 
