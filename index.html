@@ -1,175 +1,146 @@
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>My What Pub Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -- added
-    <script src="cafelist.js"></script>
-    <script>
-      
-      var map;
-      function initMap() {
+	<!DOCTYPE html>
+	<html>
 
-        var lat1 = localStorage.getItem("new_lat");
-        var lng1 = localStorage.getItem("new_lng");
+	<head>
+	<style>
 
-        var new_lat = Number(lat1);
-        var new_lng = Number(lng1);
+		* {
+			padding: 0;
+			margin: 0;
+		}
 
-        //console.log(new_lat);
-        //console.log(new_lng);
+		.main {
+		    display:flex;
+		    justify-content: center;
+		    align-items: center;
+		    height: 100vh;
+		}
 
-        map = new google.maps.Map(document.getElementById('map'), {
-          //center: {lat: 53.368555, lng: -2.580926}, // Stockton Heath
-          //center:  {lat: new_lat, lng: new_lng},
-          center: {lat: 51.4927325, lng: -0.1595648}, // Sloane Square
-          zoom: 13,
-          mapTypeId: 'roadmap'
-		
-        });
+		.button-panel {    
+		    display: table;
+		    margin: 0 auto;
+		}
 
-        
-          var iconBase = 'https://maps.google.com/mapfiles/ms/micons/';
+		.button {
+		    display: block;
+		    background: #27adf1;
+		    color: white;
+		    border: none;
+		    padding: .5em 1em;
+		    width: 100%;
+		}
 
-          var icons = {
-          pub1: {
-            icon: iconBase + 'yellow-dot.png'
-          },
-          pub2: {
-            icon: iconBase + 'orange-dot.png'
-          },
-          pub3: {
-            icon: iconBase + 'blue-dot.png'
-          },
-          pub4: {
-            icon: iconBase + 'green-dot.png'
-          },
-          cafe: {
-            icon: iconBase + 'coffeehouse.png'
-          }
-        };
+		#button2 {
+			margin-top: .25em;
+		    display: block;
+		    border: 1px solid #27adf1;
+		    color: #27adf1;
+		    background: white;
+		    padding: .5em 1em;
+		    width: 100%;
+		}
 
-        // Create markers.
-        cafes.forEach(function(feature) {
+		.button3 {
+		    margin-top: .25em;
+		    background: #27adf1;
+		    color: white;
+		    border: none;
+		    padding: .5em 1em;
+		    width: 100%;
+		}
 
-          if (feature.Type === "Classic Cafe") {
+		.button4 {
+		    margin-top: .25em;
+		    background: #27adf1;
+		    color: white;
+		    border: none;
+		    padding: .5em 1em;
+		    width: 100%;
+		}
 
-          var marker = new google.maps.Marker
-          ({
-            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
-            icon: icons['pub1'].icon,
-            title: feature.Type + ': ' + feature.Name,
-            animation: google.maps.Animation.DROP, 
-            map: map
-          });
-             }
+	</style>
+	</head>
 
-          if (feature.Type === "Cabmen's Shelter") {
+	<body>
 
-          var marker = new google.maps.Marker
-          ({
-            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
-            icon: icons['pub2'].icon,
-            title: feature.Type + ': ' + feature.Name,
-            animation: google.maps.Animation.DROP, 
-            map: map
-          });
-               };
+	<div class="main">
+		<div class="button-panel">
+			<button class="button" onclick="getLocation()">Click me to get your co-ordinates</button> 
+			<button id="button2">Co-ordinates will show here</button> 
+			<button class="button3" onclick="nextPub()">Go to Map for Pubs</button> 
+			<button class="button4" onclick="nextOther()">Go to Map for Other Places</button> 
+	 	</div>
+	</div> 	
+	
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
-          if (feature.Type === "Modern Cafe") {
+	<script>
 
-          var marker = new google.maps.Marker
-          ({
-            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
-            icon: icons['pub4'].icon,
-            title: feature.Type + ': ' + feature.Name,
-            animation: google.maps.Animation.DROP, 
-            map: map
-          });
-               };     
+		/* use jquery to disable buttons 3 & 4 until 1st button clicked */
 
-                  });   
+		jQuery(document).ready(function($) {
+		   		$(".button3, .button4").attr('disabled', 'disabled');
+		   		$(".button").click(function(){
+		     		$(".button3, .button4").removeAttr("disabled"); // removing attribute
+		   		})
+		});	
 
-         
-        fetch('https://raw.githubusercontent.com/hazanjon/camra-pubs/master/research/SearchPubs.json')
-        .then((resp) => resp.json())
-        .then(function(result)
-         {
-            let pubsInCheshireServingRealAle = result.response.Pub.filter(pub => 
-                (
-                  (pub.County === "CHES" && pub.RealAle === "y" ) || 
-                  (pub.Town === "London" && pub.RealAle === "y" ) ||
-                  (pub.Town === "Liverpool" && pub.RealAle === "y" ) ||
-                  (pub.County === "GLNW" && pub.RealAle === "y" )  ||           
-                  (pub.County.match(/GM/g) && pub.RealAle === "y" )
-                 )
-                  );
-            pubsInCheshireServingRealAle.forEach(function(pub) 
-            {
-              
-              if (pub.Town === "Liverpool") {
+		/* function to get current position/co-ordinates and to display in button2 */		
 
-              var marker = new google.maps.Marker
-               ({
-                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
-                  title: pub.Name,
-                  //animation: google.maps.Animation.DROP, 
-                  //label: pub.Name, 
-                  icon: icons['pub1'].icon,
-                  map: map
-                });
-                    }
+		var x = document.getElementById("button2");
 
-              else if (pub.County === "CHES") {
-              var marker = new google.maps.Marker
-               ({
-                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
-                  title: pub.Name,
-                  //animation: google.maps.Animation.DROP, 
-                  icon: icons['pub2'].icon,
-                  map: map
-                });
-                    }       
+		function getLocation() {
+		    if (navigator.geolocation) {
+		        navigator.geolocation.getCurrentPosition(showPosition);
+		    } else { 
+		        x.innerHTML = "Geolocation is not supported by this browser.";
+		    }
+		}
 
-              else  {
-              var marker = new google.maps.Marker
-               ({
-                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
-                  title: pub.Name,
-                  //animation: google.maps.Animation.DROP, 
-                  icon: icons['pub3'].icon,
-                  map: map
-                });
-                    }                           
+		function showPosition(position) {
 
-            });
+			var lat = position.coords.latitude.toFixed(6);
+			var lng = position.coords.longitude.toFixed(6);
 
-          });
+			localStorage.setItem("new_lat", lat);
+	        localStorage.setItem("new_lng", lng);
 
-          //localStorage.removeItem("new_lat");
-          //localStorage.removeItem("new_lng");  
+	        x.innerHTML = "Latitude: " + lat + 
+		     "<br> Longitude: " + lng;
 
-      } // Init Map 
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsKScA-PWPeLEFaLFWRzRuWyPsbZPDLLY&callback=initMap"  
-    async defer></script>
-  </body>
-</html>
+		    /* console.log(lat, "lat"); */
+		    /* console.log(lng, "lng"); */
+		}
+
+		/* function to set flag to go to pubs map */
+
+		function nextPub() {
+			
+			 	var Pubs = true;
+	 			var Others = false;
+
+	 			localStorage.setItem("getPubs", Pubs);
+	            localStorage.setItem("getOthers", Others);
+				
+				location.href='mainmap.html';
+				
+		}
+
+		/* function to set flag to go to others map */
+
+		function nextOther() {
+			
+	 			var Pubs = false;
+	 			var Others = true;
+
+	 			localStorage.setItem("getPubs", Pubs);
+	            localStorage.setItem("getOthers", Others);
+				
+				location.href='mainmap.html';
+		}
+
+	</script>
+
+	</body>
+	</html>

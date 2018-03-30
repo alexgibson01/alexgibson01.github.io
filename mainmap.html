@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My What Pub Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> 
+    <script src="cafelist.js"></script>
+    <script>
+ 
+      var map;
+      function initMap() {
+
+        /* get coordinates from 1st page passed via local storage */
+
+        var lat1 = localStorage.getItem("new_lat");
+        var lng1 = localStorage.getItem("new_lng");
+
+        var y = Number(lat1);
+        var x = Number(lng1);
+
+        var new_lat = Number(y.toFixed(6));
+        var new_lng = Number(x.toFixed(6));
+
+        /* get flags from 1st page passed via local storage */
+
+        var new_getPubs = localStorage.getItem("getPubs");
+           if (new_getPubs == "false") new_getPubs = false;
+           else new_getPubs = true; 
+      
+        var new_getOthers = localStorage.getItem("getOthers");
+           if (new_getOthers == "false") new_getOthers = false;
+           else new_getOthers = true; 
+
+        /* console.log('getPubs', new_getPubs, 'getOthers', new_getOthers); 
+           console.log(new_lat);
+           console.log(new_lng); */
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          //center: {lat: 53.368555, lng: -2.580926}, // Stockton Heath
+          center:  {lat: new_lat, lng: new_lng},
+          //center: {lat: 51.4927325, lng: -0.1595648}, // Sloane Square
+          zoom: 13,
+          mapTypeId: 'roadmap'
+		
+        });
+
+          //var iconBase = 'https://maps.google.com/mapfiles/ms/micons/';
+          //var iconBase2 = 'https://github.com/alexgibson01/Pub-Project/blob/master/map%20icons/';
+          //var iconBase2 = 'file:///C:/MapIcons/'
+          var iconBase3 = 'https://www.google.com/mapfiles/';
+
+            var icons = {
+            cafe: {
+              icon: iconBase3 + 'markerC.png'
+            },
+            pub: {
+              icon: iconBase3 + 'markerP.png'
+            },
+            shelter: {
+              icon: iconBase3 + 'markerS.png'
+            }
+          };
+
+        if (new_getPubs === false && new_getOthers === true) 
+
+        // Create markers.
+        cafes.forEach(function(feature) {
+
+          if (feature.Type === "Classic Cafe") {
+
+          var marker = new google.maps.Marker
+          ({
+            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+            icon: icons['cafe'].icon,
+            title: feature.Type + ': ' + feature.Name,
+            animation: google.maps.Animation.DROP, 
+            map: map
+          });
+             }
+
+          if (feature.Type === "Cabmen's Shelter") {
+
+          var marker = new google.maps.Marker
+          ({
+            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+            icon: icons['shelter'].icon,
+            title: feature.Type + ': ' + feature.Name,
+            animation: google.maps.Animation.DROP, 
+            map: map
+          });
+               };
+
+          if (feature.Type === "Modern Cafe") {
+
+          var marker = new google.maps.Marker
+          ({
+            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+            icon: icons['cafe'].icon,
+            title: feature.Type + ': ' + feature.Name,
+            animation: google.maps.Animation.DROP, 
+            map: map
+          });
+               };     
+
+                  });   
+
+
+        if (new_getPubs === true && new_getOthers === false) 
+         
+        fetch('https://raw.githubusercontent.com/hazanjon/camra-pubs/master/research/SearchPubs.json')
+        .then((resp) => resp.json())
+        .then(function(result)
+         {
+            let pubsInCheshireServingRealAle = result.response.Pub.filter(pub => 
+                (
+                  pub.RealAle === "y" || pub.RealAle === "n"
+                  //pub.Latitude === new_lat && pub.Longitude === new_lng
+                  // (pub.County === "CHES" && pub.RealAle === "y" ) || 
+                  // (pub.Town === "London" && pub.RealAle === "y" ) ||
+                  // (pub.Town === "Liverpool" && pub.RealAle === "y" ) ||
+                  // (pub.County === "GLNW" && pub.RealAle === "y" )  ||           
+                  // (pub.County.match(/GM/g) && pub.RealAle === "y" )
+                 )
+                  );
+            pubsInCheshireServingRealAle.forEach(function(pub) 
+            {
+              
+              if (pub.Town === "Liverpool") {
+
+              var marker = new google.maps.Marker
+               ({
+                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
+                  title: pub.Name,
+                  //animation: google.maps.Animation.DROP, 
+                  //label: pub.Name, 
+                  icon: icons['pub'].icon,
+                  map: map
+                });
+                                      }
+
+              else if (pub.County === "CHES") {
+              var marker = new google.maps.Marker
+               ({
+                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
+                  title: pub.Name,
+                  //animation: google.maps.Animation.DROP, 
+                  icon: icons['pub'].icon,
+                  map: map
+                });
+                    }       
+
+              else  {
+              var marker = new google.maps.Marker
+               ({
+                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
+                  title: pub.Name,
+                  //animation: google.maps.Animation.DROP, 
+                  icon: icons['pub'].icon,
+                  map: map
+                });
+                    }                           
+
+            });
+
+          });
+
+          //localStorage.removeItem("new_lat");
+          //localStorage.removeItem("new_lng");  
+
+      } // Init Map 
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsKScA-PWPeLEFaLFWRzRuWyPsbZPDLLY&callback=initMap"  
+    async defer></script>
+  </body>
+</html>

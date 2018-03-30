@@ -37,6 +37,24 @@ var cafes = [
               "Postcode": "SW7 3ND"
             },
             {
+              "Type": "Modern Cafe",
+              "Name": "Linda's Pantry",
+              "Town": "Manchester",
+              "County": "Greater Manchester",
+              "Latitude": 53.480390,
+              "Longitude": -2.229046,
+              "Postcode": "M1 2JL"
+            },
+            {
+              "Type": "Modern Cafe",
+              "Name": "Essy's",
+              "Town": "Manchester",
+              "County": "Greater Manchester",
+              "Latitude": 53.481793,
+              "Longitude": -2.249558,
+              "Postcode": "M3 2PW"
+            },
+            {
               "Type": "Cabmen's Shelter",
               "Name": "Chelsea Embankment",
               "Town": "London",
