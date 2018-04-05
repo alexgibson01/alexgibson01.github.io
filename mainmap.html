@@ -178,6 +178,11 @@
                 });
                     }                           
 
+                    marker.addListener('click', function() {
+                    map.setZoom(15);
+                    map.setCenter(marker.getPosition());
+                        }); 
+
             });
 
           });
