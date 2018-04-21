@@ -155,6 +155,11 @@
                       icon: icons['here'].icon,
                       map: map
                     });
+
+                    marker.addListener('click', function() {
+                    map.setZoom(15);
+                    map.setCenter(marker.getPosition());
+                            });   
          
         fetch('https://raw.githubusercontent.com/hazanjon/camra-pubs/master/research/SearchPubs.json')
         .then((resp) => resp.json())
