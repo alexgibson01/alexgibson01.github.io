@@ -76,10 +76,25 @@
             },
             shelter: {
               icon: iconBase3 + 'markerS.png'
+            },
+            here: {
+              icon: iconBase3 + 'arrow.png'
             }
           };
 
+        // ** Path 1 - Others (Non Pubs) **
+
         if (new_getPubs === false && new_getOthers === true) 
+
+          var marker = new google.maps.Marker
+                   ({
+                      position: new google.maps.LatLng(new_lat, new_lng),
+                      animation: google.maps.Animation.DROP, 
+                      title: 'You are here',
+                      //label: 'You are here', 
+                      icon: icons['here'].icon,
+                      map: map
+                    });
 
         // Create markers.
         cafes.forEach(function(feature) {
@@ -120,10 +135,26 @@
           });
                };     
 
+            marker.addListener('click', function() {
+                 map.setZoom(15);
+                 map.setCenter(marker.getPosition());
+                        });   
+
                   });   
 
+        // ** Path 2 - Pubs **
 
         if (new_getPubs === true && new_getOthers === false) 
+
+              var marker = new google.maps.Marker
+                   ({
+                      position: new google.maps.LatLng(new_lat, new_lng),
+                      animation: google.maps.Animation.DROP, 
+                      title: 'You are here',
+                      //label: 'You are here', 
+                      icon: icons['here'].icon,
+                      map: map
+                    });
          
         fetch('https://raw.githubusercontent.com/hazanjon/camra-pubs/master/research/SearchPubs.json')
         .then((resp) => resp.json())
@@ -181,6 +212,7 @@
                     marker.addListener('click', function() {
                     map.setZoom(15);
                     map.setCenter(marker.getPosition());
+                    infoWindow.open(map, marker);
                         }); 
 
             });
