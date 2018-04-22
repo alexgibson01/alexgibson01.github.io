@@ -19,6 +19,42 @@ var cafes = [
               "Postcode": "SW1P 4BY"
             },
             {
+              "Type": "Classic Cafe",
+              "Name": "E Pellicci",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.526552,
+              "Longitude": -0.063443,
+              "Postcode": "E2 0AG"
+            },
+            {
+              "Type": "Classic Cafe",
+              "Name": "Cafe Rodi",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.587608,
+              "Longitude": -0.040224,
+              "Postcode": "E17 6HJ"
+            },
+            {
+              "Type": "Classic Cafe",
+              "Name": "River Cafe",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.468213,
+              "Longitude": -0.209247,
+              "Postcode": "SW6 3UH"
+            },
+            {
+              "Type": "Classic Cafe",
+              "Name": "Franks",
+              "Town": "London",
+              "County": "London",
+              "Latitude": 51.495973,
+              "Longitude": -0.207815,
+              "Postcode": "SW6 3UH"
+            }, 
+            {
               "Type": "Modern Cafe",
               "Name": "NAC",
               "Town": "London",
