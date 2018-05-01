@@ -49,9 +49,9 @@
            if (new_getOthers == "false") new_getOthers = false;
            else new_getOthers = true; 
 
-        /* console.log('getPubs', new_getPubs, 'getOthers', new_getOthers); 
-           console.log(new_lat);
-           console.log(new_lng); */
+        console.log('getPubs', new_getPubs, 'getOthers', new_getOthers); 
+           //console.log(new_lat);
+           //console.log(new_lng); */
 
         map = new google.maps.Map(document.getElementById('map'), {
           //center: {lat: 53.368555, lng: -2.580926}, // Stockton Heath
@@ -77,144 +77,214 @@
             shelter: {
               icon: iconBase3 + 'markerS.png'
             },
+            lido: {
+              icon: iconBase3 + 'markerL.png'
+            },
+            houses: {
+              icon: iconBase3 + 'markerH.png'
+            },
+            venues: {
+              icon: iconBase3 + 'markerV.png'
+            },
             here: {
               icon: iconBase3 + 'arrow.png'
             }
           };
 
+        // Creates you are here marker  
+
+            var marker = new google.maps.Marker
+                 ({
+                    position: new google.maps.LatLng(new_lat, new_lng),
+                    animation: google.maps.Animation.DROP, 
+                    title: 'You are here',
+                    //label: 'You are here', 
+                    icon: icons['here'].icon,
+                    map: map
+                  });
+
+                  marker.addListener('click', function() {
+                    map.setZoom(15);
+                    map.setCenter(marker.getPosition());
+                            });   
+                     
+
         // ** Path 1 - Others (Non Pubs) **
 
-        if (new_getPubs === false && new_getOthers === true) 
-
-          var marker = new google.maps.Marker
-                   ({
-                      position: new google.maps.LatLng(new_lat, new_lng),
-                      animation: google.maps.Animation.DROP, 
-                      title: 'You are here',
-                      //label: 'You are here', 
-                      icon: icons['here'].icon,
-                      map: map
-                    });
+        if (new_getPubs === false && new_getOthers === true)    
 
         // Create markers.
         cafes.forEach(function(feature) {
 
           if (feature.Type === "Classic Cafe") {
 
-          var marker = new google.maps.Marker
-          ({
-            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
-            icon: icons['cafe'].icon,
-            title: feature.Type + ': ' + feature.Name,
-            animation: google.maps.Animation.DROP, 
-            map: map
-          });
-             }
+            var marker = new google.maps.Marker
+            ({
+              position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+              icon: icons['cafe'].icon,
+              title: feature.Type + ': ' + feature.Name,
+              animation: google.maps.Animation.DROP, 
+              map: map
+            });
+               }
 
           if (feature.Type === "Cabmen's Shelter") {
 
-          var marker = new google.maps.Marker
-          ({
-            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
-            icon: icons['shelter'].icon,
-            title: feature.Type + ': ' + feature.Name,
-            animation: google.maps.Animation.DROP, 
-            map: map
-          });
-               };
+            var marker = new google.maps.Marker
+            ({
+              position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+              icon: icons['shelter'].icon,
+              title: feature.Type + ': ' + feature.Name,
+              animation: google.maps.Animation.DROP, 
+              map: map
+            });
+                 };
 
           if (feature.Type === "Modern Cafe") {
 
-          var marker = new google.maps.Marker
-          ({
-            position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
-            icon: icons['cafe'].icon,
-            title: feature.Type + ': ' + feature.Name,
-            animation: google.maps.Animation.DROP, 
-            map: map
-          });
-               };     
+            var marker = new google.maps.Marker
+            ({
+              position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+              icon: icons['cafe'].icon,
+              title: feature.Type + ': ' + feature.Name,
+              animation: google.maps.Animation.DROP, 
+              map: map
+            });
+                 };   
+
+          if (feature.Type === "Lido") {
+
+            var marker = new google.maps.Marker
+            ({
+              position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+              icon: icons['lido'].icon,
+              title: feature.Type + ': ' + feature.Name,
+              animation: google.maps.Animation.DROP, 
+              map: map
+            });
+                 };
+
+          if (feature.Type === "Houses") {
+
+            var marker = new google.maps.Marker
+            ({
+              position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+              icon: icons['houses'].icon,
+              title: feature.Type + ': ' + feature.Name,
+              animation: google.maps.Animation.DROP, 
+              map: map
+            });
+                 }; 
+               
+          if (feature.Type === "Venues") {
+
+            var marker = new google.maps.Marker
+            ({
+              position: new google.maps.LatLng(feature.Latitude, feature.Longitude),
+              icon: icons['venues'].icon,
+              title: feature.Type + ': ' + feature.Name,
+              animation: google.maps.Animation.DROP, 
+              map: map
+            });
+                 };                  
 
             marker.addListener('click', function() {
-                 map.setZoom(15);
-                 map.setCenter(marker.getPosition());
-                        });   
+               map.setZoom(15);
+               map.setCenter(marker.getPosition());
+                      });   
 
-                  });   
+            var contentString = '<div align="left"><p style="color:#000000;"><br />' + feature.Type + '<br />' + 
+              feature.Name + '<br />' + feature.Postcode + '<br />' +
+              "Visited: <input type='checkbox' name='flag6' id='flag6' value='Y'></input>" 
+              + '</p></div>';
+           
+
+            var infowindow = new google.maps.InfoWindow({
+
+            content: contentString 
+            
+                });                  
+
+            marker.addListener('dblclick', function() {
+                 //map.setZoom(15);
+                 //map.setCenter(marker.getPosition()); 
+                 infowindow.open(map, marker);
+                });
+
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                  $(document).ready(function(){
+                  $('input[type=checkbox]').click(function(){
+                    if($(this).is(':checked')){
+                     // alert($(this).attr('id'));  
+                        alert ("checked");
+                          }   
+                    else {alert("unchecked");}
+                        });
+                      });
+                    });
+
+                  });  
 
         // ** Path 2 - Pubs **
 
         if (new_getPubs === true && new_getOthers === false) 
 
-              var marker = new google.maps.Marker
-                   ({
-                      position: new google.maps.LatLng(new_lat, new_lng),
-                      animation: google.maps.Animation.DROP, 
-                      title: 'You are here',
-                      //label: 'You are here', 
-                      icon: icons['here'].icon,
-                      map: map
-                    });
-
-                    marker.addListener('click', function() {
-                    map.setZoom(15);
-                    map.setCenter(marker.getPosition());
-                            });   
-         
-        fetch('https://raw.githubusercontent.com/hazanjon/camra-pubs/master/research/SearchPubs.json')
-        .then((resp) => resp.json())
-        .then(function(result)
-         {
-            let pubsInCheshireServingRealAle = result.response.Pub.filter(pub => 
-                (
-                  //pub.RealAle === "y" || pub.RealAle === "n"
-                  //pub.Latitude === new_lat && pub.Longitude === new_lng
-                  (pub.County === "CHES" && pub.RealAle === "y" ) || 
-                  // (pub.Town === "London" && pub.RealAle === "y" ) ||
-                  (pub.Town === "Liverpool" && pub.RealAle === "y" ) ||
-                  // (pub.County === "GLNW" && pub.RealAle === "y" )  ||           
-                  (pub.County.match(/GM/g) && pub.RealAle === "y" )
-                 )
-                  );
-            pubsInCheshireServingRealAle.forEach(function(pub) 
+          fetch('https://raw.githubusercontent.com/hazanjon/camra-pubs/master/research/SearchPubs.json')
+          .then((resp) => resp.json())
+          .then(function(result)
+           {
+              let pubsInCheshireServingRealAle = result.response.Pub.filter(pub => 
+                  (
+                    //pub.RealAle === "y" || pub.RealAle === "n"
+                    //pub.Latitude === new_lat && pub.Longitude === new_lng
+                    (pub.County === "CHES" && pub.RealAle === "y" ) || 
+                    // (pub.Town === "London" && pub.RealAle === "y" ) ||
+                    (pub.Town === "Liverpool" && pub.RealAle === "y" ) ||
+                    // (pub.County === "GLNW" && pub.RealAle === "y" )  ||           
+                    (pub.County.match(/GM/g) && pub.RealAle === "y" )
+                   )
+                    );
+                  pubsInCheshireServingRealAle.forEach(function(pub) 
             {
               
               if (pub.Town === "Liverpool") {
 
-              var marker = new google.maps.Marker
-               ({
-                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
-                  title: pub.Name,
-                  //animation: google.maps.Animation.DROP, 
-                  //label: pub.Name, 
-                  icon: icons['pub'].icon,
-                  map: map
-                });
+                var marker = new google.maps.Marker
+                 ({
+                    position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
+                    title: pub.Name,
+                    //animation: google.maps.Animation.DROP, 
+                    //label: pub.Name, 
+                    icon: icons['pub'].icon,
+                    map: map
+                  });
                                       }
 
               else if (pub.County === "CHES") {
-              var marker = new google.maps.Marker
-               ({
-                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
-                  title: pub.Name,
-                  //animation: google.maps.Animation.DROP, 
-                  icon: icons['pub'].icon,
-                  map: map
-                });
-                    }       
+
+                var marker = new google.maps.Marker
+                 ({
+                    position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
+                    title: pub.Name,
+                    //animation: google.maps.Animation.DROP, 
+                    icon: icons['pub'].icon,
+                    map: map
+                  });
+                      }       
 
               else  {
-              var marker = new google.maps.Marker
-               ({
-                  position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
-                  title: pub.Name,
-                  //animation: google.maps.Animation.DROP, 
-                  icon: icons['pub'].icon,
-                  map: map
-                });
-                    }                           
 
-                    marker.addListener('click', function() {
+                var marker = new google.maps.Marker
+                 ({
+                    position: new google.maps.LatLng(pub.Latitude, pub.Longitude),
+                    title: pub.Name,
+                    //animation: google.maps.Animation.DROP, 
+                    icon: icons['pub'].icon,
+                    map: map
+                  });
+                      }                           
+
+                  marker.addListener('click', function() {
                     map.setZoom(15);
                     map.setCenter(marker.getPosition());
                     infoWindow.open(map, marker);
